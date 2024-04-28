@@ -60,7 +60,6 @@ function HomePage() {
         <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
             <CssBaseline />
             <MenuBar />
-            <SlidingSettings />
             <Box sx={{ my: 3, mx: 'auto', textAlign: 'center', color: 'gray' }}>
                 <Typography variant="h4" component="h1">My Tasks</Typography>
                 {loading ? (
@@ -87,6 +86,7 @@ function HomePage() {
                                     <ListItem
                                         button
                                         sx={{ backgroundColor: '#67C6E3', borderRadius: '10px', mb: 1 }}
+                                        onClick={() => handleTaskClick(task.taskID, task.taskFinished === 0)}
                                     >
                                         <Checkbox
                                             edge="start"
