@@ -13,7 +13,7 @@ import {
     CssBaseline,
 } from '@mui/material';
 import MenuBar from "../components/MenuBar";
-import { fetchMyTasks, deleteTask } from "../api/taskManagement";
+import {fetchMyTasks, deleteTask, setTaskCompletion} from "../api/taskManagement";
 import SlidingSettings from "../components/SlidingSettings";
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -27,6 +27,7 @@ function HomePage() {
             const tasksData = await fetchMyTasks();
             if (tasksData) {
                 setTasks(tasksData);
+                setCompletedTasks(tasksData.filter(task => task.completed).map(task => task.taskID));
                 setLoading(false);
             } else {
                 // Handle error fetching tasks
@@ -37,13 +38,21 @@ function HomePage() {
         fetchTasks();
     }, []);
 
-    const handleTaskClick = (taskId) => {
-        if (completedTasks.includes(taskId)) {
-            setCompletedTasks(completedTasks.filter(id => id !== taskId));
+
+    const handleTaskClick = async (taskId) => {
+        const isCompleted = completedTasks.includes(taskId);
+        const success = await setTaskCompletion(taskId, !isCompleted); // Toggle completion
+        if (success) {
+            if (isCompleted) {
+                setCompletedTasks(completedTasks.filter(id => id !== taskId));
+            } else {
+                setCompletedTasks([...completedTasks, taskId]);
+            }
         } else {
-            setCompletedTasks([...completedTasks, taskId]);
+            console.error("Failed to update task completion status");
         }
     };
+
 
     const handleDeleteTask = async (taskId) => {
         const success = await deleteTask(taskId);
