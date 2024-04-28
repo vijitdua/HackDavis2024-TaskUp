@@ -104,8 +104,15 @@ function HomePage() {
                                         />
                                         <ListItemText
                                             id={task.taskID}
-                                            primary={task.taskName}
-                                            secondary={task.deadline}
+                                            primary={<Typography style={{ color: '#2E5077' }}>{task.taskName}</Typography>}
+                                            secondary={new Date(task.deadline).toLocaleString('en-US', {
+                                                month: 'numeric',
+                                                day: 'numeric',
+                                                year: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                                hour12: true
+                                            })}
                                         />
                                         <ListItemSecondaryAction>
                                             <IconButton
