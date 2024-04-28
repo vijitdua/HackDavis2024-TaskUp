@@ -48,6 +48,7 @@ function TaskPagePopUp() {
     }
 
     return (
+        <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
         <CssBaseline>
             <Container maxWidth='xs'>
                 <Box
@@ -58,14 +59,19 @@ function TaskPagePopUp() {
                         alignItems: 'center',
                         // backgroundColor: '#f9f9f9',
                         borderRadius: '16px',
-                        padding: '10px',
+                        padding: '30px',
 
                         '& > *': {
                             margin: '15px', // Apply margin to each child
                         },
                     }}
                 >
-                    <Typography variant='h2' component='h1'>Task Scheduler</Typography>
+                    <Typography variant='h2' component='h1' style={{ fontFamily: 'Trebuchet MS', color: '#2E5077'}}>
+                        Task
+                    </Typography>
+                    <Typography variant='h2' component='h1' style={{ fontFamily: 'Trebuchet MS', color: '#2E5077'}}>
+                        Scheduler
+                    </Typography>
 
                     <TextField
                         fullWidth
@@ -119,6 +125,7 @@ function TaskPagePopUp() {
             </Container>
             <MenuBar/>
         </CssBaseline>
+        </Box>
     );
 }
 

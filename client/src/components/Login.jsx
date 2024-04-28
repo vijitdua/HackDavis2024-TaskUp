@@ -40,11 +40,14 @@ function Login() {
     return (
         <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh' }}> {/* Add background color and minHeight to cover the entire page */}
             <Container maxWidth='xs'>
-                    {/*<SlidingSettings />*/}
-                    <CssBaseline />
+                {/*<SlidingSettings />*/}
+                <CssBaseline/>
+                <br/>
+                <br/>
+                <br/>
                 <Box
                     sx={{
-                        marginTop: 8,
+                        marginTop: 0,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -107,7 +110,7 @@ function Login() {
                         type="submit"
                         fullWidth
                         variant="contained"
-                        sx={{mt: 3, mb: 2, bgcolor: '#67C6E3', '&:hover': { bgcolor: '#4CA9D2' } }}
+                        sx={{mt: 3, mb: 2, bgcolor: '#67C6E3', '&:hover': {bgcolor: '#4CA9D2'}}}
                         onClick={loginButton}
                     >
                         Log In

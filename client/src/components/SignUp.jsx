@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {signUp, login} from "../api/auth";
 import ErrorMessage from "./ErrorMessage";
 import {
@@ -35,126 +35,130 @@ function SignUp() {
     }
 
     return (
-
-        <Container maxWidth='xs'>
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-
-                    '& > *': {
-                        margin: '15px', // Apply margin to each child
-                    },
-                }}
-            >
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    '& > *': {
-                        margin: '10px',
-                    },
-                }}>
-                    <Avatar
-                        size='large'
-                        sx={{bgcolor: '#343536'}}
-                    >
-                        <LockIcon/>
-                    </Avatar>
-                    <Typography variant="h4" component="h1">Sign Up</Typography>
-                </Box>
-
-                {/*<Grid sx={{ margin: '0 !important' }}>*/}
+        <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh' }}>
+            <Container maxWidth='xs'>
+                <br/>
+                <br/>
+                <br/>
                 <Box
                     sx={{
+                        marginTop: 0,
                         display: 'flex',
-                        alignItems: 'flex-start',
-                        margin: '0 !important',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+
+                        '& > *': {
+                            margin: '15px', // Apply margin to each child
+                        },
                     }}
                 >
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        '& > *': {
+                            margin: '10px',
+                        },
+                    }}>
+                        <Avatar
+                            size='large'
+                            sx={{bgcolor: '#53b0c9'}}
+                        >
+                            <LockIcon/>
+                        </Avatar>
+                        <Typography variant="h4" component="h1">Sign Up</Typography>
+                    </Box>
+
+                    {/*<Grid sx={{ margin: '0 !important' }}>*/}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            margin: '0 !important',
+                        }}
+                    >
+                        <TextField
+                            autoComplete="given-name"
+                            name="firstName"
+                            required
+                            fullWidth
+                            id="firstName"
+                            label="First Name"
+                            autoFocus
+                            onChange={(event) => setUserData("firstName", event.target.value)}
+                            sx={{marginRight: '5px'}}
+                        />
+
+                        <TextField
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Last Name"
+                            name="lastName"
+                            autoComplete="family-name"
+                            onChange={(event) => setUserData("lastName", event.target.value)}
+                            sx={{marginLeft: '5px'}}
+                        />
+
+                    </Box>
+
                     <TextField
-                        autoComplete="given-name"
-                        name="firstName"
+                        label="Username"
                         required
                         fullWidth
-                        id="firstName"
-                        label="First Name"
+                        variant="outlined"
+                        margin='normal'
                         autoFocus
-                        onChange={(event) => setUserData("firstName", event.target.value)}
-                        sx={{marginRight: '5px'}}
+                        autoComplete="username"
+                        onChange={(event) => setUserData("username", event.target.value)}
                     />
 
                     <TextField
+                        label="Password"
                         required
                         fullWidth
-                        id="lastName"
-                        label="Last Name"
-                        name="lastName"
-                        autoComplete="family-name"
-                        onChange={(event) => setUserData("lastName", event.target.value)}
-                        sx={{marginLeft: '5px'}}
+                        variant="outlined"
+                        type='password'
+                        margin='normal'
+                        autoFocus
+                        autoComplete="password"
+                        onChange={(event) => setUserData("password", event.target.value)}
                     />
 
-                </Box>
+                    <Box sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
 
-                <TextField
-                    label="Username"
-                    required
-                    fullWidth
-                    variant="outlined"
-                    margin='normal'
-                    autoFocus
-                    autoComplete="username"
-                    onChange={(event) => setUserData("username", event.target.value)}
-                />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary"/>}
+                            label="Remember me"
+                            onChange={(e) => e.target.checked ? setUserData("remember", true) : setUserData("remember", false)}
+                        />
+                    </Box>
 
-                <TextField
-                    label="Password"
-                    required
-                    fullWidth
-                    variant="outlined"
-                    type='password'
-                    margin='normal'
-                    autoFocus
-                    autoComplete="password"
-                    onChange={(event) => setUserData("password", event.target.value)}
-                />
-
-                <Box sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
-
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                        onChange={(e) => e.target.checked ? setUserData("remember", true) : setUserData("remember", false)}
-                    />
-                </Box>
-
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{mt: 3, mb: 2}}
-                    onClick={signUpButton}
-                >
-                    Sign Up
-                </Button>
-                <Grid container spacing={2} justifyContent='space-between'>
-                    <Grid item>
-                        <Link href='/' variant='body2'>
-                            Home
-                        </Link>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2, bgcolor: '#67C6E3', '&:hover': {bgcolor: '#4CA9D2'}}}
+                        onClick={signUpButton}
+                    >
+                        Sign Up
+                    </Button>
+                    <Grid container spacing={2} justifyContent='space-between'>
+                        <Grid item>
+                            <Link href='/' variant='body2'>
+                                Home
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link href="/login" variant="body2">
+                                Already have an account? Login
+                            </Link>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Link href="/login" variant="body2">
-                            Already have an account? Login
-                        </Link>
-                    </Grid>
-                </Grid>
-            </Box>
-            {error && <ErrorMessage message={error} errID={errID}/>}
-        </Container>
+                </Box>
+                {error && <ErrorMessage message={error} errID={errID}/>}
+            </Container>
+        </Box>
     );
 }
 

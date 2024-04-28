@@ -31,20 +31,20 @@ function Leaderboard() {
     const sortedFriends = friendsStats.slice().sort((a, b) => b.points - a.points);
 
     return (
-        <Box sx={{ backgroundColor: '#D8F0FF' }}>
+        <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb:7 }}>
             <Container maxWidth='lg'>
                 <SlidingSettings />
                 <CssBaseline />
                 <Box borderRadius={8} overflow="hidden">
                     {sortedFriends.length > 0 && (
                         <Box bgcolor="#81C4F8" p={2} mb={2}>
-                            <Typography variant="h3" align="center" gutterBottom>
-                                Leader Board
+                            <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: 'Trebuchet MS', color: '#2E5077',fontWeight: 'bold' }}>
+                                Leaderboard
                             </Typography>
                             <Typography variant="h5" align="center" gutterBottom style={{ fontSize: "4em" }}>
                                 🏆
                             </Typography>
-                            <Typography variant="h4" align="center" gutterBottom>
+                            <Typography variant="h4" align="center" gutterBottom style={{ fontFamily: 'Trebuchet MS', color: '#D8F0FF'}}>
                                 {sortedFriends[0].username} is in the lead!
                             </Typography>
                         </Box>
@@ -54,16 +54,16 @@ function Leaderboard() {
                     {sortedFriends.map((friend, index) => (
                         <React.Fragment key={index}>
                             <Box key={index} display="flex" alignItems="center" justifyContent="space-evenly" paddingY={2} paddingX={4} sx={{ width: "100%" }}>
-                                <Typography variant="h6" gutterBottom >
+                                <Typography variant="h6" gutterBottom style={{ fontFamily: 'Trebuchet MS', color: '#2E5077'}}>
                                     {index + 1}
                                 </Typography>
                                 <Typography variant="h6" gutterBottom style={{ fontSize: "4em" }}>
                                     {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "⭐️"}
                                 </Typography>
-                                <Typography variant="h6" gutterBottom >
+                                <Typography variant="h6" gutterBottom style={{ fontFamily: 'Trebuchet MS', color: '#2E5077'}}>
                                     {friend.username}
                                 </Typography>
-                                <Typography variant="h6" gutterBottom>
+                                <Typography variant="h6" gutterBottom style={{ fontFamily: 'Trebuchet MS', color: '#2E5077'}}>
                                     {friend.points} tasks
                                 </Typography>
                             </Box>

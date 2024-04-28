@@ -1,10 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Drawer, List, ListItem, ListItemText, IconButton, Box, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import {
+    Drawer,
+    List,
+    ListItem,
+    ListItemText,
+    IconButton,
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    TextField,
+    Divider
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { logout } from "../api/auth";
+import {logout} from "../api/auth";
 import Cookies from "universal-cookie";
-import { addAFriend, removeFriend, fetchFriendList, fetchUserStats } from "../api/manageFriends"; // Import API functions
+import {addAFriend, removeFriend, fetchFriendList, fetchUserStats} from "../api/manageFriends"; // Import API functions
 import ErrorMessage from "./ErrorMessage";
+import CloseIcon from '@mui/icons-material/Close';
 
 function RightSideMenu() {
     const cookie = new Cookies();
@@ -35,15 +50,15 @@ function RightSideMenu() {
         fetchFriends();
     }, []);
 
-    async function handleAddFriend(){
+    async function handleAddFriend() {
         // Add friend handling logic here
         console.log("Adding friend:", newFriend);
         let success = await addAFriend(newFriend);
-        if(success !== true){
+        if (success !== true) {
             setErr(success);
             setErrID(prevId => prevId + 1);
         }
-        if(success === true) {
+        if (success === true) {
             setDialogOpen(false);
             setNewFriend('');
             const updatedFriends = await fetchFriendList();
@@ -52,6 +67,7 @@ function RightSideMenu() {
             } else {
                 // Handle error fetching updated friends list
             }
+            window.location.href = '/leaderboard';
         }
     };
 
@@ -60,6 +76,7 @@ function RightSideMenu() {
         if (success === true) {
             const updatedFriends = friendsList.filter((friend) => friend !== username);
             setFriendsList(updatedFriends);
+            window.location.href = '/leaderboard';
         } else {
             // Handle error removing friend
         }
@@ -69,9 +86,9 @@ function RightSideMenu() {
         const friendStats = await Promise.all(friendsList.map(async (friend) => {
             const stats = await fetchUserStats(friend);
             if (stats && stats.numTasksDoneToday) {
-                return { username: friend, points: stats.numTasksDoneToday };
+                return {username: friend, points: stats.numTasksDoneToday};
             }
-            return { username: friend, points: 0 };
+            return {username: friend, points: 0};
         }));
 
         friendStats.sort((a, b) => b.points - a.points);
@@ -81,9 +98,9 @@ function RightSideMenu() {
     }
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+        <Box sx={{display: 'flex', justifyContent: 'flex-end', width: '100%'}}>
             <IconButton onClick={toggleDrawer(true)} edge="end">
-                <MenuIcon />
+                <MenuIcon/>
             </IconButton>
 
             <Drawer
@@ -92,27 +109,35 @@ function RightSideMenu() {
                 onClose={toggleDrawer(false)}
                 PaperProps={{
                     sx: {
-                        backgroundColor: '#67C6E3',
+                        display: 'flex',
+                        flexDirection: 'column', // Makes it a flex container with vertical orientation.
+                        height: '100%', // Ensures the flex container fills the drawer height.
+                        backgroundColor: 'white',
                         width: 250
                     }
                 }}
-            >
-                <List>
-                    <ListItem button onClick={() => logout()}>
+            ><List sx={{overflow: 'auto'}}>
+                <Button onClick={() => setDialogOpen(true)}
+                        sx={{width: '100%', bgcolor: '#67C6E3', borderRadius: '16px', color: '#D8F0FF'}}>
+                    Add Friend
+                </Button>
+                <Divider/>
+                {friendsList.map((friend, index) => (
+                    <ListItem key={index}>
+                        <ListItemText primary={friend}/>
+                        <IconButton onClick={() => handleRemoveFriend(friend)}>
+                            <CloseIcon sx={{color: 'light gray'}}/>
+                        </IconButton>
+                    </ListItem>
+                ))}
+            </List>
+                <Box sx={{mt: 'auto', width: '100%'}}>
+                    <Button onClick={() => logout()} sx={{width: '100%', color: 'red'}}>
                         Log out
-                    </ListItem>
-                    <ListItem button onClick={() => setDialogOpen(true)}>
-                        Add Friend
-                    </ListItem>
-                    {friendsList.map((friend, index) => (
-                        <ListItem key={index}>
-                            <ListItemText primary={friend} />
-                            <Button onClick={() => handleRemoveFriend(friend)}>Remove</Button>
-                        </ListItem>
-                    ))}
-                </List>
+                    </Button>
+                </Box>
+                <br/>
             </Drawer>
-
             <Dialog open={isDialogOpen} onClose={() => setDialogOpen(false)}>
                 <DialogTitle>Add Friend</DialogTitle>
                 <DialogContent>
