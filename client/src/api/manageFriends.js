@@ -24,7 +24,6 @@ export async function fetchUserStats(username){
     }
 }
 
-
 export async function addAFriend(username){
     console.log("Trying to add a friend");
     const token = cookie.get("token");

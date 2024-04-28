@@ -64,7 +64,7 @@ function Leaderboard() {
                                     {friend.username}
                                 </Typography>
                                 <Typography variant="h6" gutterBottom>
-                                    {friend.points}tasks
+                                    {friend.points} tasks
                                 </Typography>
                             </Box>
                             {index !== sortedFriends.length - 1 && <hr style={{ width: "80%", backgroundColor: "#E5E5E5", margin: "0 auto" }} />}

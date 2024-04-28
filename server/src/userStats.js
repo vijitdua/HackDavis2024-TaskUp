@@ -23,9 +23,11 @@ export async function fetchUserStat(req, res, dbConnector) {
 
         // DataSets
         let numTasksDoneToday = await dbConnector.execute(`SELECT COUNT(*) AS count FROM ${process.env.MYSQL_TASK_TABLE}${username}
-                                                            WHERE deadline > NOW() - INTERVAL 24 HOUR AND taskFinished = TRUE;
+                                                            WHERE completedDate > Now() - INTERVAL 24 HOUR AND taskFinished = 1;
                                                             `);
+        console.log(numTasksDoneToday);
         numTasksDoneToday = numTasksDoneToday[0][0].count;
+        console.log(numTasksDoneToday);
 
         let firstName = await dbConnector.execute(`SELECT firstName FROM ${process.env.MYSQL_USER_TABLE} WHERE username = ?;`, [username]);
         firstName = firstName[0][0].firstName;
