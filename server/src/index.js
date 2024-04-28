@@ -6,7 +6,7 @@ import {initializeDataBaseWithRetry} from "./initializeDataBase.js";
 import {authenticateToken, login, signUp} from "./auth.js";
 import {createTask, fetchTasks} from "./taskManagement.js";
 import {fetchUserStat} from "./userStats.js";
-import {addFriend} from "./friendsManagement.js";
+import {addFriend, fetchFriends, removeFriend} from "./friendsManagement.js";
 
 // Express config
 const app = express();
@@ -28,13 +28,17 @@ app.post("/signup", async (req, res) => signUp(req, res, dbConnector));
 app.post("/login", async (req, res) => login(req, res, dbConnector));
 app.post("/authenticate", async (req, res) => authenticateToken(req, res, dbConnector));
 app.post("/create-task", async(req, res) => createTask(req, res, dbConnector));
+app.post("/delete-task"); //TODO
+app.post("/change-task-completion"); //TODO
 app.post("/add-friend", async(req, res) => addFriend(req,res,dbConnector));
+app.post("/remove-friend", async(req, res) => removeFriend(req,res,dbConnector));
 
 
 
 // Get Requests
 app.get("/my-tasks/:token", async(req,res)=> fetchTasks(req,res,dbConnector));
 app.get("/user-stats/:username", async(req,res)=> fetchUserStat(req,res,dbConnector));
+app.get("/fetch-friends/:token", async(req,res)=> fetchFriends(req,res,dbConnector));
 
 
 // Listen for requests

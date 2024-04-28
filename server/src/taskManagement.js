@@ -78,3 +78,65 @@ export async function fetchTasks(req, res, dbConnector) {
         res.json({ res: `${e}`});
     }
 }
+
+export async function deleteTask(req, res, dbConnector) {
+    try {
+        const token = req.body.token;
+        const taskID = req.body.taskID;
+
+        if (!token) {
+            throw new Error("token not received");
+        }
+
+        if (!taskID) {
+            throw new Error("data incomplete");
+        }
+
+        let [users] = await dbConnector.execute(`SELECT username FROM ${process.env.MYSQL_USER_TABLE} WHERE token = ?;`, [token]);
+        if (users.length === 0) {
+            throw new Error("invalid token");
+        }
+        let username = users[0].username;
+
+        await dbConnector.query(`DELETE FROM ${process.env.MYSQL_TASK_TABLE}${username} WHERE taskID = ?;`, [taskID]);
+        res.json({res: "success"});
+    } catch (e) {
+        console.error(`Error deleting task: ${e}`);
+        res.json({res: `${e}`});
+    }
+}
+
+export async function setTaskCompletion(req, res, dbConnector) {
+    try {
+        const token = req.body.token;
+        const taskID = req.body.taskID;
+        const isCompleted = req.body.isCompleted;  // This should be a boolean value true or false
+
+        if (!token) {
+            throw new Error("token not received");
+        }
+
+        if (!taskID || isCompleted === undefined) {
+            throw new Error("data incomplete");
+        }
+
+        let [users] = await dbConnector.execute(`SELECT username FROM ${process.env.MYSQL_USER_TABLE} WHERE token = ?;`, [token]);
+        if (users.length === 0) {
+            throw new Error("invalid token");
+        }
+        let username = users[0].username;
+
+        // Determine the completedDate based on the isCompleted status
+        let completedDate = isCompleted ? 'NOW()' : 'NULL';
+
+        await dbConnector.query(`UPDATE ${process.env.MYSQL_TASK_TABLE}${username} 
+            SET taskFinished = ?, completedDate = ${completedDate} 
+            WHERE taskID = ?;`, [isCompleted, taskID]);
+
+        res.json({res: "success"});
+    } catch (e) {
+        console.error(`Error setting task completion: ${e}`);
+        res.json({res: `${e}`});
+    }
+}
+

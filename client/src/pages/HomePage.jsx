@@ -43,9 +43,9 @@ function HomePage() {
     const completedPercentage = Math.round((completedTasks.length / tasks.length) * 100);
 
     return (
-        <Box sx={{ backgroundColor: '#DFF5FF', minHeight: '100vh', pb: 7 }}>
-            <Box sx={{ my: 3, mx: 'auto', textAlign: 'center' }}>
-                <Typography variant="h4" gutterBottom>
+        <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
+            <Box sx={{ my: 3, mx: 'auto', textAlign: 'center', color: 'white' }}>
+                <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Kodchasan, sans-serif' }}>
                     My Tasks
                 </Typography>
                 {loading ? (
@@ -57,7 +57,7 @@ function HomePage() {
                         </Typography>
 
                         <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-                            <CircularProgress variant="determinate" value={completedPercentage} size={150} thickness={4} sx={{ color: '#81C4F8' }} />
+                            <CircularProgress variant="determinate" value={completedPercentage} size={150} thickness={4} sx={{ color: '#67C6E3' }} />
                             <Typography
                                 variant="caption"
                                 component="div"
@@ -71,13 +71,26 @@ function HomePage() {
                         <List>
                             {tasks.map((task) => (
                                 <React.Fragment key={task.taskID}>
-                                    <ListItem button onClick={() => handleTaskClick(task.taskID)}>
-                                        <Checkbox
-                                            edge="start"
-                                            checked={completedTasks.includes(task.taskID)}
-                                            disableRipple
-                                        />
-                                        <ListItemText primary={task.taskName} secondary={task.deadline} />
+                                    <ListItem
+                                        button
+                                        onClick={() => handleTaskClick(task.taskID)}
+                                        sx={{ backgroundColor: '#67C6E3', borderRadius: '10px', mb: 1 }}
+                                    >
+                                    <Checkbox
+                                        edge="start"
+                                        checked={completedTasks.includes(task.taskID)}
+                                        disableRipple
+                                        sx={{
+                                            color: 'white',
+                                            '&.Mui-checked': {
+                                                color: 'white',
+                                            },
+                                            '&.Mui-checked:hover': {
+                                                backgroundColor: 'white',
+                                            },
+                                        }}
+                                    />
+                                        <ListItemText primary={task.taskName} secondary={task.deadline} sx={{ color: 'white' }} />
                                     </ListItem>
                                     <Divider />
                                 </React.Fragment>

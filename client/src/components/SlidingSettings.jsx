@@ -3,10 +3,13 @@ import { Drawer, List, ListItem, ListItemText, IconButton, Box, Dialog, DialogTi
 import MenuIcon from '@mui/icons-material/Menu';
 import { logout } from "../api/auth";
 import Cookies from "universal-cookie";
+import {addAFriend, removeFriend} from "../api/manageFriends";
+import ErrorMessage from "./ErrorMessage";
 
 function RightSideMenu() {
     const cookie = new Cookies();
-
+    const [error, setErr] = useState(null);
+    const [errID, setErrID] = useState(0); //Error Message component won't re-render if same error occurs, but if new error ID is sent, it knows it's a new error
     const [isDrawerOpen, setDrawerOpen] = useState(false);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [newFriend, setNewFriend] = useState(null);
@@ -18,13 +21,20 @@ function RightSideMenu() {
         setDrawerOpen(open);
     };
 
-    const handleAddFriend = () => {
+    async function handleAddFriend(){
         // Add friend handling logic here
         console.log("Adding friend:", newFriend);
-        // Close the dialog
-        setDialogOpen(false);
-        // Clear the input field
-        setNewFriend('');
+        let success = await addAFriend(newFriend);
+        if(success!== true){
+            setErr(success);
+            setErrID(prevId => prevId + 1); // Increment errorId to ensure a new key for each error
+        }
+        if(success === true) {
+            // Close the dialog
+            setDialogOpen(false);
+            // Clear the input field
+            setNewFriend('');
+        }
     };
 
     return (
@@ -72,6 +82,7 @@ function RightSideMenu() {
                         onChange={(e) => setNewFriend(e.target.value)}
                     />
                 </DialogContent>
+                {error && <ErrorMessage message={error} errID={errID}/>}
                 <DialogActions>
                     <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
                     <Button onClick={handleAddFriend}>Add</Button>

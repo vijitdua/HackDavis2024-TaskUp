@@ -7,7 +7,7 @@ import TaskPagePopUp from "../pages/TaskPagePopUp";
 
 function MenuBar() {
     return (
-        <AppBar position="fixed" sx={{top: 'auto', bottom: 0, backgroundColor: '#378CE7'}}>
+        <AppBar position="fixed" sx={{top: 'auto', bottom: 0, backgroundColor: '#67C6E3'}}>
             <Toolbar>
                 <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                     {/* Left icon */}
@@ -36,7 +36,7 @@ function MenuBar() {
                                 margin: 'auto',
                                 fontSize: 'large',
                                 transform: 'translateY(-30%)',
-                                backgroundColor: '#378CE7',
+                                backgroundColor: '#67C6E3',
                                 borderRadius: '50%', // Creates a circular shape
                                 width: 93,
                                 height: 93,
