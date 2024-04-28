@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function HomePage() {
     const [completedPercent, setCompletedPercent] = useState(null);
+    const [numTasksLeft, setNumTasksLeft] = useState(0);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -53,21 +54,23 @@ function HomePage() {
     const calculateCompletedPercentage = () => {
         const totalTasks = tasks.length;
         const completedTasks = tasks.filter(task => task.taskFinished !== 0).length;
-        setCompletedPercent(totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100);
+        setNumTasksLeft(totalTasks - completedTasks);
+        setCompletedPercent(totalTasks === 0 ? 0 : Math.ceil((completedTasks / totalTasks) * 100));
     };
 
     return (
         <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
             <CssBaseline />
             <MenuBar />
-            <Box sx={{ my: 3, mx: 'auto', textAlign: 'center', color: 'gray' }}>
+            <Box sx={{mx: 'auto', textAlign: 'center', color: 'gray' }}>
+                <br/>
                 <Typography variant="h4" component="h1">My Tasks</Typography>
                 {loading ? (
                     <CircularProgress />
                 ) : (
                     <>
                         <Typography variant="h6" gutterBottom>
-                            You have {tasks.length} tasks!
+                            You have {numTasksLeft} tasks!
                         </Typography>
                         <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
                             <CircularProgress variant="determinate" value={completedPercent} size={150} thickness={4} sx={{ color: '#81C4F8' }} />

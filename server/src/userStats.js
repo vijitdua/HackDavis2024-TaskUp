@@ -32,7 +32,7 @@ export async function fetchUserStat(req, res, dbConnector) {
         let lastName = await dbConnector.execute(`SELECT lastName FROM ${process.env.MYSQL_USER_TABLE} WHERE username = ?;`, [username]);
         lastName = lastName[0][0].lastName;
 
-        res.json({res: `success`, firstName: firstName, lastName: lastName, numTasksDoneToday:numTasksDoneToday});
+        res.json({res: `success`, firstName: firstName, lastName: lastName, numTasksDoneToday: numTasksDoneToday});
     }catch(e){
         console.error(`Error fetching tasks: ${e}`);
         res.json({ res: `${e}`});
