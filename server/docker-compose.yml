@@ -11,8 +11,28 @@ services:
       - database
     environment:
       - PORT=3000
-      - DATABASE_URL=https://taskup-tnav-default-rtdb.firebaseio.com
+      - MYSQL_HOST=localhost
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD='My2108*#'
+      - MYSQL_DB=TaskUpDB
+      - MYSQL_USER_TABLE=Users
+      - MYSQL_TASK_TABLE=TaskList
+      - PROPEL_URL=https://4791792.propelauthtest.com
+      - PROPEL_AUTH_API=6f227fc09bc85f6774abdd0eb7f824e8355a28b587f0c5096abe5eadc104a2a3fc959cf6a8d53a853f0b39ca42b3dfd6
     restart: always
 
+  database:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_DATABASE=TaskUpDB
+      - MYSQL_ROOT_PASSWORD='My2108*#'
+    volumes:
+      - task-up-data:/var/lib/mysql
+
 volumes:
-  data:
+  task-up-data:

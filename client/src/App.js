@@ -1,11 +1,11 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoPage from "./pages/NoPage";
 import LandingPage from "./pages/LandingPage";
-import TestLeaderBoard from "./pages/TestLeaderBoard";
 import TaskPagePopUp from "./pages/TaskPagePopUp";
-import {createTheme, ThemeProvider} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import Leaderboard from "./pages/Leaderboard";
 import TestData from "./pages/TestData";
+import HomePage from "./pages/HomePage"; // Import HomePage
 
 function App() {
     const { palette } = createTheme();
@@ -18,7 +18,7 @@ function App() {
                 '@global': {
                     // Add your custom CSS here
                     body: {
-                        backgroundColor: '#5356FF', // Example background color
+                        backgroundColor: '#fff', // Example background color
                     },
                     // You can override other global styles as well
                 },
@@ -38,16 +38,15 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/">
-                        <Route index element={<LandingPage/>}/>
-                        <Route path="task" element={<TaskPagePopUp/>}/>
-                        <Route path="leaderboard" element={<Leaderboard/>}/>
-                        <Route path="*" element={<NoPage/>}/>
-                        <Route path="t" element={<TestData/>}/>
+                        <Route index element={<LandingPage />} />
+                        <Route path="leaderboard" element={<Leaderboard />} />
+                        <Route path="create-task" element={<TaskPagePopUp />} /> {/* Add route for TaskPagePopUp */}
+                        <Route path="home" element={<HomePage />} /> {/* Add route for HomePage */}
+                        <Route path="*" element={<NoPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
-
     );
 }
 

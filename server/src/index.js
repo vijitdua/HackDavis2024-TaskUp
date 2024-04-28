@@ -1,28 +1,35 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
-dotenv.config(); // Imports dotenv
+dotenv.config();
+import {initializeDataBaseWithRetry} from "./initializeDataBase.js";
 
 // Express config
 const app = express();
 app.use(cors()); //Work with any origin for now
 app.use(express.json());
 
-// Setup FireBase
-const admin = require('firebase-admin');
-
-const serviceAccount = require('/path/to/service-account-file.json'); //TOOD: Fix
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: `${process.env.DATABASE_URL}`
+// Initialize authentication
+const { AuthProvider } = require("@propelauth/node");
+const authProvider = new AuthProvider({
+    apiKey: process.env.PROPEL_AUTH_API,
+    authDomain: process.env.PROPEL_URL
 });
 
-const db = admin.firestore();
+// Initialize database, exit if failed
+let dbConnector;
+initializeDataBaseWithRetry(5).then(conn => {
+    dbConnector = conn;
+});
+
+
 
 
 // Post Requests
+// app.post("/create-task", async (req, res) => createTask(req, res, dbConnector));
+
+// Is authentication valid?
+// app.get("/auth", async(req,res)=> authenticateRequest(req,res,authProvider));
 
 
 // Get Requests

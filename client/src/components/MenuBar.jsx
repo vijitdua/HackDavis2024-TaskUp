@@ -1,31 +1,29 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Box, SvgIcon } from '@mui/material';
+import {AppBar, Toolbar, IconButton, Box, SvgIcon} from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import TaskPagePopUp from "../pages/TaskPagePopUp";
 
 function MenuBar() {
     return (
-        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+        <AppBar position="fixed" sx={{top: 'auto', bottom: 0, backgroundColor: '#378CE7'}}>
             <Toolbar>
-                <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                     {/* Left icon */}
                     <IconButton
                         color="inherit"
                         aria-label="home"
-                        sx={{ fontSize: 'large' }}
+                        sx={{fontSize: 'large'}}
                         onClick={() => {
                             window.location.href = '/';
                         }}
                     >
-                        <HomeIcon sx={{ fontSize: '2rem' }} />
+                        <HomeIcon sx={{fontSize: '2rem'}}/>
                     </IconButton>
 
                     {/* Center icon with circle outline */}
-                    <Box sx={{ position: 'relative', marginBottom: '15px' }}>
-                        <SvgIcon sx={{ fontSize: '4rem', color: 'primary.main' }}>
-                            <circle cx="24" cy="24" r="22" fill="white" stroke="#5fb2c9" strokeWidth="2" />
-                        </SvgIcon>
+                    <Box sx={{marginBottom: '15px'}}>
                         <IconButton
                             color="inherit"
                             aria-label="add"
@@ -37,10 +35,22 @@ function MenuBar() {
                                 bottom: 0,
                                 margin: 'auto',
                                 fontSize: 'large',
-                                transform: 'translateY(-50%)'
+                                transform: 'translateY(-30%)',
+                                backgroundColor: '#378CE7',
+                                borderRadius: '50%', // Creates a circular shape
+                                width: 93,
+                                height: 93,
+                                '&:hover': {
+                                    backgroundColor: '#4c85d7',
+                                }
                             }}
                         >
-                            <AddCircleOutlineIcon sx={{ fontSize: '3rem' }} />
+                            <AddCircleOutlineIcon sx={{
+                                fontSize: '5rem'
+                            }}
+                            onClick={()=>{
+                                window.location.href = '/create-task';
+                            }}/>
                         </IconButton>
                     </Box>
 
@@ -48,12 +58,12 @@ function MenuBar() {
                     <IconButton
                         color="inherit"
                         aria-label="statistics"
-                        sx={{ fontSize: 'large' }}
+                        sx={{fontSize: 'large'}}
                         onClick={() => {
-                            // Handle statistics icon action
+                            window.location.href = '/leaderboard';
                         }}
                     >
-                        <BarChartIcon sx={{ fontSize: '2rem' }} />
+                        <BarChartIcon sx={{fontSize: '2rem'}}/>
                     </IconButton>
                 </Box>
             </Toolbar>
