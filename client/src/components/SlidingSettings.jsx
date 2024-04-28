@@ -9,7 +9,7 @@ function RightSideMenu() {
 
     const [isDrawerOpen, setDrawerOpen] = useState(false);
     const [isDialogOpen, setDialogOpen] = useState(false);
-    const [newFriend, setNewFriend] = useState('');
+    const [newFriend, setNewFriend] = useState(null);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {

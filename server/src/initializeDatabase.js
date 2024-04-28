@@ -68,6 +68,7 @@ async function createUserDataTableIfNotExists(dbConnector){
                     lastName varchar(255) NOT NULL,
                     hashedPassword varchar(255) NOT NULL,
                     token varchar(255) NOT NULL,
+                    friends varchar(1000),
                     UNIQUE(username),
                     UNIQUE(userID),
                     UNIQUE(token),

@@ -6,6 +6,7 @@ import {initializeDataBaseWithRetry} from "./initializeDataBase.js";
 import {authenticateToken, login, signUp} from "./auth.js";
 import {createTask, fetchTasks} from "./taskManagement.js";
 import {fetchUserStat} from "./userStats.js";
+import {addFriend} from "./friendsManagement.js";
 
 // Express config
 const app = express();
@@ -27,6 +28,7 @@ app.post("/signup", async (req, res) => signUp(req, res, dbConnector));
 app.post("/login", async (req, res) => login(req, res, dbConnector));
 app.post("/authenticate", async (req, res) => authenticateToken(req, res, dbConnector));
 app.post("/create-task", async(req, res) => createTask(req, res, dbConnector));
+app.post("/add-friend", async(req, res) => addFriend(req,res,dbConnector));
 
 
 

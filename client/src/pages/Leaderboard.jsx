@@ -38,7 +38,7 @@ function Leaderboard() {
             {sortedFriends.length > 0 && (
                 <Box bgcolor="#81C4F8" p={2} mb={2}>
                     <Typography variant="h3" align="center" gutterBottom>
-                        Leaderboard
+                        TESTING
                     </Typography>
                     <Typography variant="h5" align="center" gutterBottom style={{ fontSize: "4em" }}>
                         🏆
@@ -65,8 +65,8 @@ function Leaderboard() {
             <Box display="flex" flexDirection="column" alignItems="center">
                 {sortedFriends.map((friend, index) => (
                 <React.Fragment key={friend.id}>
-                    <Box key={friend.id} display="flex" alignItems="center" paddingY={2} paddingX={4} sx={{ width: "100%" }}>
-                        <Typography variant="h6" gutterBottom style={{ position: "absolute", left: "60px" }}>
+                    <Box key={friend.id} display="flex" alignItems="center" justifyContent="space-evenly" paddingY={2} paddingX={4} sx={{ width: "100%" }}>
+                        <Typography variant="h6" gutterBottom >
                             {index + 1}
                         </Typography>
                         <Typography variant="h6" gutterBottom style={{ fontSize: "4em" }}>
@@ -75,7 +75,7 @@ function Leaderboard() {
                         <Typography variant="h6" gutterBottom >
                             {friend.name}
                         </Typography>
-                        <Typography variant="h6" gutterBottom style={{ position: "absolute", right: "60px" }}>
+                        <Typography variant="h6" gutterBottom>
                             {friend.points}pts
                         </Typography>
 
