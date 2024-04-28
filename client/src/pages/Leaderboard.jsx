@@ -70,6 +70,7 @@ function Leaderboard() {
                         {/*    {index === 0 ? "👑 " : ""}{friend.name}*/}
                         {/*</Typography>*/}
                     </Box>
+                        {index !== sortedFriends.length - 1 && <hr style={{ width: "80%", backgroundColor: "#E5E5E5", margin: "0 auto" }} />}
                     </React.Fragment>
                 ))}
             </Box>
