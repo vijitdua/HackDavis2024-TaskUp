@@ -41,7 +41,7 @@ function MenuBar() {
                                 width: 93,
                                 height: 93,
                                 '&:hover': {
-                                    backgroundColor: '#4c85d7',
+                                    backgroundColor: '#65beda',
                                 }
                             }}
                         >

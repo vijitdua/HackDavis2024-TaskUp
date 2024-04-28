@@ -6,11 +6,16 @@ import {
     List,
     ListItem,
     ListItemText,
+    ListItemSecondaryAction,
     Divider,
     Checkbox,
+    IconButton,
+    CssBaseline,
 } from '@mui/material';
 import MenuBar from "../components/MenuBar";
-import { fetchMyTasks } from "../api/taskManagement";
+import { fetchMyTasks, deleteTask } from "../api/taskManagement";
+import SlidingSettings from "../components/SlidingSettings";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function HomePage() {
     const [completedTasks, setCompletedTasks] = useState([]);
@@ -40,12 +45,26 @@ function HomePage() {
         }
     };
 
-    const completedPercentage = Math.round((completedTasks.length / tasks.length) * 100);
+    const handleDeleteTask = async (taskId) => {
+        const success = await deleteTask(taskId);
+        if (success === true) {
+            setTasks(tasks.filter(task => task.taskID !== taskId));
+        } else {
+            // Handle error deleting task
+            console.error("Error deleting task");
+        }
+    };
+
+
+
+    const completedPercentage = tasks.length === 0 ? 0 : Math.round((completedTasks.length / tasks.length) * 100);
 
     return (
         <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
-            <Box sx={{ my: 3, mx: 'auto', textAlign: 'center', color: 'white' }}>
-                <Typography variant="h4" gutterBottom sx={{ fontFamily: 'Kodchasan, sans-serif' }}>
+            <SlidingSettings />
+            <CssBaseline />
+            <Box sx={{ my: 3, mx: 'auto', textAlign: 'center', color: 'gray' }}>
+                <Typography variant="h4" component="h1">
                     My Tasks
                 </Typography>
                 {loading ? (
@@ -76,21 +95,26 @@ function HomePage() {
                                         onClick={() => handleTaskClick(task.taskID)}
                                         sx={{ backgroundColor: '#67C6E3', borderRadius: '10px', mb: 1 }}
                                     >
-                                    <Checkbox
-                                        edge="start"
-                                        checked={completedTasks.includes(task.taskID)}
-                                        disableRipple
-                                        sx={{
-                                            color: 'white',
-                                            '&.Mui-checked': {
+                                        <Checkbox
+                                            edge="start"
+                                            checked={completedTasks.includes(task.taskID)}
+                                            disableRipple
+                                            sx={{
                                                 color: 'white',
-                                            },
-                                            '&.Mui-checked:hover': {
-                                                backgroundColor: 'white',
-                                            },
-                                        }}
-                                    />
+                                                '&.Mui-checked': {
+                                                    color: 'gray',
+                                                },
+                                                '&.Mui-checked:hover': {
+                                                    backgroundColor: 'gray',
+                                                },
+                                            }}
+                                        />
                                         <ListItemText primary={task.taskName} secondary={task.deadline} sx={{ color: 'white' }} />
+                                        <ListItemSecondaryAction>
+                                            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task.taskID)}>
+                                                <DeleteIcon sx={{ color: 'red' }} /> {/* Setting the color of DeleteIcon to red */}
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
                                     </ListItem>
                                     <Divider />
                                 </React.Fragment>
@@ -99,7 +123,6 @@ function HomePage() {
                     </>
                 )}
             </Box>
-
             <MenuBar />
         </Box>
     );

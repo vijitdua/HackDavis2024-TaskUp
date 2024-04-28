@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {login} from "../api/auth";
 import ErrorMessage from "./ErrorMessage.jsx";
 import {
@@ -6,7 +6,7 @@ import {
     Box,
     Button,
     Checkbox,
-    Container,
+    Container, CssBaseline,
     FormControlLabel,
     Grid,
     Link,
@@ -14,6 +14,7 @@ import {
     Typography
 } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
+import SlidingSettings from "./SlidingSettings";
 
 function Login() {
     const [user, setUser] = useState(null);
@@ -37,92 +38,96 @@ function Login() {
 
 
     return (
-        <Container maxWidth='xs'>
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+        <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh' }}> {/* Add background color and minHeight to cover the entire page */}
+            <Container maxWidth='xs'>
+                    <SlidingSettings />
+                    <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
 
-                    '& > *': {
-                        margin: '15px', // Apply margin to each child
-                    },
-                }}
-            >
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    '& > *': {
-                        margin: '10px',
-                    },
-                }}>
-                    <Avatar
-                        size='large'
-                        sx={{bgcolor: '#53b0c9'}}
-                    >
-                        <LockIcon/>
-                    </Avatar>
-                    <Typography variant="h4" component="h1">Log In</Typography>
-                </Box>
-
-                <TextField
-                    label="Username"
-                    required
-                    fullWidth
-                    variant="outlined"
-                    margin='normal'
-                    autoFocus
-                    autoComplete="username"
-                    onChange={(event) => setUserData("username", event.target.value)}
-                />
-
-                <TextField
-                    label="Password"
-                    required
-                    fullWidth
-                    variant="outlined"
-                    type='password'
-                    margin='normal'
-                    autoFocus
-                    autoComplete="password"
-                    onChange={(event) => setUserData("password", event.target.value)}
-                />
-
-                <Box sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
-
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                        onChange={(e) => e.target.checked ? setUserData("remember", true) : setUserData("remember", false)}
-                    />
-                </Box>
-
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{mt: 3, mb: 2}}
-                    onClick={loginButton}
+                        '& > *': {
+                            margin: '15px', // Apply margin to each child
+                        },
+                    }}
                 >
-                    Log In
-                </Button>
-                <Grid container spacing={2} justifyContent='space-between'>
-                    <Grid item>
-                        <Link href='/' variant='body2'>
-                            Home
-                        </Link>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        '& > *': {
+                            margin: '10px',
+                        },
+                    }}>
+                        <Avatar
+                            size='large'
+                            sx={{bgcolor: '#53b0c9'}}
+                        >
+                            <LockIcon/>
+                        </Avatar>
+                        <Typography variant="h4" component="h1">Log In</Typography>
+                    </Box>
+
+                    <TextField
+                        label="Username"
+                        required
+                        fullWidth
+                        variant="outlined"
+                        margin='normal'
+                        autoFocus
+                        autoComplete="username"
+                        onChange={(event) => setUserData("username", event.target.value)}
+                    />
+
+                    <TextField
+                        label="Password"
+                        required
+                        fullWidth
+                        variant="outlined"
+                        type='password'
+                        margin='normal'
+                        autoFocus
+                        autoComplete="password"
+                        onChange={(event) => setUserData("password", event.target.value)}
+                    />
+
+                    <Box sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
+
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary"/>}
+                            label="Remember me"
+                            onChange={(e) => e.target.checked ? setUserData("remember", true) : setUserData("remember", false)}
+                        />
+                    </Box>
+
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2, bgcolor: '#67C6E3', '&:hover': { bgcolor: '#4CA9D2' } }}
+                        onClick={loginButton}
+                    >
+                        Log In
+                    </Button>
+                    <Grid container spacing={2} justifyContent='space-between'>
+                        <Grid item>
+                            <Link href='/' variant='body2'>
+                                Home
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link href="/signup" variant="body2">
+                                Don't have an account? Sign Up
+                            </Link>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Link href="/signup" variant="body2">
-                            Don't have an account? Sign Up
-                        </Link>
-                    </Grid>
-                </Grid>
-            </Box>
-            {error && <ErrorMessage message={error} errID={errID}/>}
-        </Container>
+                </Box>
+                {error && <ErrorMessage message={error} errID={errID}/>}
+            </Container>
+        </Box>
     );
 }
 

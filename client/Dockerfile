@@ -1,6 +1,6 @@
 FROM node:21
 
-ENV REACT_APP_BACKEND=taskup-server.vijitdua.xyz
+ENV REACT_APP_BACKEND=http://taskup-server.vijitdua.xyz
 
 WORKDIR /app
 
@@ -10,8 +10,6 @@ RUN npm install
 
 COPY . ./
 
-RUN npm run build
-
 EXPOSE 3000
 
-CMD ["serve", "-s", "build"]
+CMD ["npm", "start"]

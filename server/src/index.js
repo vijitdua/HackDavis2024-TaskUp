@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-import {initializeDataBaseWithRetry} from "./initializeDataBase.js";
+import {initializeDataBaseWithRetry} from "./initializeDatabase.js";
 import {authenticateToken, login, signUp} from "./auth.js";
-import {createTask, fetchTasks} from "./taskManagement.js";
+import {createTask, deleteTask, fetchTasks, setTaskCompletion} from "./taskManagement.js";
 import {fetchUserStat} from "./userStats.js";
 import {addFriend, fetchFriends, removeFriend} from "./friendsManagement.js";
 
@@ -28,8 +28,8 @@ app.post("/signup", async (req, res) => signUp(req, res, dbConnector));
 app.post("/login", async (req, res) => login(req, res, dbConnector));
 app.post("/authenticate", async (req, res) => authenticateToken(req, res, dbConnector));
 app.post("/create-task", async(req, res) => createTask(req, res, dbConnector));
-app.post("/delete-task"); //TODO
-app.post("/change-task-completion"); //TODO
+app.post("/delete-task", async(req,res)=> deleteTask(req,res,dbConnector)); //TODO
+app.post("/change-task-completion", async(req,res)=> setTaskCompletion(req,res,dbConnector)); //TODO
 app.post("/add-friend", async(req, res) => addFriend(req,res,dbConnector));
 app.post("/remove-friend", async(req, res) => removeFriend(req,res,dbConnector));
 
