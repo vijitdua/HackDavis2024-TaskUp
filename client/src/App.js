@@ -5,6 +5,7 @@ import TestLeaderBoard from "./pages/TestLeaderBoard";
 import TaskPagePopUp from "./pages/TaskPagePopUp";
 import {createTheme, ThemeProvider} from "@mui/material";
 import Leaderboard from "./pages/Leaderboard";
+import TestData from "./pages/TestData";
 
 function App() {
     const { palette } = createTheme();
@@ -41,6 +42,7 @@ function App() {
                         <Route path="task" element={<TaskPagePopUp/>}/>
                         <Route path="leaderboard" element={<Leaderboard/>}/>
                         <Route path="*" element={<NoPage/>}/>
+                        <Route path="t" element={<TestData/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>

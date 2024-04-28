@@ -1,6 +1,5 @@
-import { db } from './firebase';
-
-function getTask(id) {
+import {db} from 'firebase';
+export function getTask(id) {
     return db.collection('tasks').doc(id).get()
         .then(doc => {
             if (doc.exists) {
@@ -14,3 +13,4 @@ function getTask(id) {
             console.log("Error getting document:", error);
         });
 }
+
