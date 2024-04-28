@@ -4,21 +4,19 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "3005:3000"
     expose:
       - "3000"
     depends_on:
       - database
     environment:
       - PORT=3000
-      - MYSQL_HOST=localhost
+      - MYSQL_HOST=database  # Changed from localhost to database
       - MYSQL_USERNAME=root
-      - MYSQL_PASSWORD='My2108*#'
+      - MYSQL_PASSWORD=ThisIsAStrongPassword
       - MYSQL_DB=TaskUpDB
       - MYSQL_USER_TABLE=Users
       - MYSQL_TASK_TABLE=TaskList
-      - PROPEL_URL=https://4791792.propelauthtest.com
-      - PROPEL_AUTH_API=6f227fc09bc85f6774abdd0eb7f824e8355a28b587f0c5096abe5eadc104a2a3fc959cf6a8d53a853f0b39ca42b3dfd6
     restart: always
 
   database:
@@ -30,7 +28,7 @@ services:
       - "3306"
     environment:
       - MYSQL_DATABASE=TaskUpDB
-      - MYSQL_ROOT_PASSWORD='My2108*#'
+      - MYSQL_ROOT_PASSWORD=ThisIsAStrongPassword
     volumes:
       - task-up-data:/var/lib/mysql
 
