@@ -1,11 +1,34 @@
-import React, { useEffect } from "react";
+import React,{useState, useEffect} from "react";
 import { Box, Container, CssBaseline, Typography } from "@mui/material";
 import MenuBar from "../components/MenuBar";
 import SlidingSettings from "../components/SlidingSettings";
 import { authenticateToken } from "../api/auth";
-import {fetchFriendList} from "../api/manageFriends";
-
+import {fetchFriendList, fetchUserStats} from "../api/manageFriends"
 function Leaderboard() {
+    const [friendsStats, setFriendsStats] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            await authenticateToken(); // Check login status
+            const friends = await fetchFriendList(); // Fetch friend list
+            if (friends) {
+                const stats = await Promise.all(
+                    friends.map(async (friend) => {
+                        const stats = await fetchUserStats(friend);
+                        if (stats && stats.numTasksDoneToday) {
+                            return { username: friend, points: stats.numTasksDoneToday };
+                        }
+                        return { username: friend, points: 0 };
+                    })
+                );
+                setFriendsStats(stats);
+            }
+        }
+        fetchData();
+    }, []);
+
+    // const sortedFriends = friendsStats.slice().sort((a, b) => b.points - a.points);
+
     async function checkLoginStatus() {
         let status = await authenticateToken();
         if (status === false) {
@@ -38,7 +61,7 @@ function Leaderboard() {
                     {sortedFriends.length > 0 && (
                         <Box bgcolor="#81C4F8" p={2} mb={2}>
                             <Typography variant="h3" align="center" gutterBottom>
-                                TESTING
+                                Leaderboard
                             </Typography>
                             <Typography variant="h5" align="center" gutterBottom style={{ fontSize: "4em" }}>
                                 🏆

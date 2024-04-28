@@ -14,7 +14,7 @@ import {
     Typography
 } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
-import SlidingSettings from "./SlidingSettings";
+// import SlidingSettings from "./SlidingSettings";
 
 function Login() {
     const [user, setUser] = useState(null);
@@ -40,7 +40,7 @@ function Login() {
     return (
         <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh' }}> {/* Add background color and minHeight to cover the entire page */}
             <Container maxWidth='xs'>
-                    <SlidingSettings />
+                    {/*<SlidingSettings />*/}
                     <CssBaseline />
                 <Box
                     sx={{

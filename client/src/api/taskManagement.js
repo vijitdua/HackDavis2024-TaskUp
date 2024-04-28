@@ -61,7 +61,7 @@ export async function deleteTask(taskID) {
     console.log("Attempting to delete a task");
     const token = cookie.get("token");
     try {
-        const res = await Axios.delete(`${process.env.REACT_APP_BACKEND}/delete-task`, {data: {token, taskID}});
+        const res = await Axios.post(`${process.env.REACT_APP_BACKEND}/delete-task`, {token: token, taskID: taskID});
         console.log(`Server response: `, res.data.res);
         if (res.data.res === "Error: token not received") {
             return "Unable to process login data, please make sure you are logged in first";
@@ -86,7 +86,7 @@ export async function setTaskCompletion(taskID, isCompleted) {
     console.log("Attempting to set task completion status");
     const token = cookie.get("token");
     try {
-        const res = await Axios.post(`${process.env.REACT_APP_BACKEND}/set-task-completion`, {token, taskID, isCompleted});
+        const res = await Axios.post(`${process.env.REACT_APP_BACKEND}/change-task-completion`, {token: token, taskID: taskID, isCompleted: isCompleted});
         console.log(`Server response: `, res.data.res);
         if (res.data.res === "Error: token not received") {
             return false;

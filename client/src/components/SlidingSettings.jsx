@@ -3,13 +3,13 @@ import { Drawer, List, ListItem, ListItemText, IconButton, Box, Dialog, DialogTi
 import MenuIcon from '@mui/icons-material/Menu';
 import { logout } from "../api/auth";
 import Cookies from "universal-cookie";
-import { addAFriend, removeFriend, fetchFriendList } from "../api/manageFriends";
+import { addAFriend, removeFriend, fetchFriendList, fetchUserStats } from "../api/manageFriends"; // Import API functions
 import ErrorMessage from "./ErrorMessage";
 
 function RightSideMenu() {
     const cookie = new Cookies();
     const [error, setErr] = useState(null);
-    const [errID, setErrID] = useState(0); //Error Message component won't re-render if same error occurs, but if new error ID is sent, it knows it's a new error
+    const [errID, setErrID] = useState(0);
     const [isDrawerOpen, setDrawerOpen] = useState(false);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [newFriend, setNewFriend] = useState('');
@@ -41,14 +41,11 @@ function RightSideMenu() {
         let success = await addAFriend(newFriend);
         if(success !== true){
             setErr(success);
-            setErrID(prevId => prevId + 1); // Increment errorId to ensure a new key for each error
+            setErrID(prevId => prevId + 1);
         }
         if(success === true) {
-            // Close the dialog
             setDialogOpen(false);
-            // Clear the input field
             setNewFriend('');
-            // Update friends list
             const updatedFriends = await fetchFriendList();
             if (updatedFriends) {
                 setFriendsList(updatedFriends);
@@ -61,7 +58,6 @@ function RightSideMenu() {
     async function handleRemoveFriend(username) {
         const success = await removeFriend(username);
         if (success === true) {
-            // Update friends list
             const updatedFriends = friendsList.filter((friend) => friend !== username);
             setFriendsList(updatedFriends);
         } else {
@@ -69,48 +65,54 @@ function RightSideMenu() {
         }
     }
 
+    async function computeFriendPoints() {
+        const friendStats = await Promise.all(friendsList.map(async (friend) => {
+            const stats = await fetchUserStats(friend);
+            if (stats && stats.numTasksDoneToday) {
+                return { username: friend, points: stats.numTasksDoneToday };
+            }
+            return { username: friend, points: 0 };
+        }));
+
+        friendStats.sort((a, b) => b.points - a.points);
+
+        console.log("Friend Stats:", friendStats);
+        // Update leaderboard state or display
+    }
+
     return (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-            {/* Drawer icon on the right of the screen */}
             <IconButton onClick={toggleDrawer(true)} edge="end">
                 <MenuIcon />
             </IconButton>
 
-            {/* Drawer with custom background color */}
             <Drawer
                 anchor="right"
                 open={isDrawerOpen}
                 onClose={toggleDrawer(false)}
                 PaperProps={{
                     sx: {
-                        backgroundColor: '#67C6E3', // Your specified background color
-                        width: 250 // You can adjust the width or make it responsive
+                        backgroundColor: '#67C6E3',
+                        width: 250
                     }
                 }}
             >
                 <List>
-                    {/* Add your menu items here */}
                     <ListItem button onClick={() => logout()}>
                         Log out
                     </ListItem>
-                    {/* Add button to open add friend dialog */}
                     <ListItem button onClick={() => setDialogOpen(true)}>
                         Add Friend
                     </ListItem>
-                    {/* Display list of friends */}
                     {friendsList.map((friend, index) => (
                         <ListItem key={index}>
                             <ListItemText primary={friend} />
-                            {friendsList.length > 0 && (
-                                <Button onClick={() => handleRemoveFriend(friend)}>Remove</Button>
-                            )}
+                            <Button onClick={() => handleRemoveFriend(friend)}>Remove</Button>
                         </ListItem>
                     ))}
-                    {/* ... more items */}
                 </List>
             </Drawer>
 
-            {/* Dialog for adding friend */}
             <Dialog open={isDialogOpen} onClose={() => setDialogOpen(false)}>
                 <DialogTitle>Add Friend</DialogTitle>
                 <DialogContent>

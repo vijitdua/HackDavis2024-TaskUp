@@ -13,69 +13,56 @@ import {
     CssBaseline,
 } from '@mui/material';
 import MenuBar from "../components/MenuBar";
-import {fetchMyTasks, deleteTask, setTaskCompletion} from "../api/taskManagement";
+import { fetchMyTasks, deleteTask, setTaskCompletion } from "../api/taskManagement";
 import SlidingSettings from "../components/SlidingSettings";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function HomePage() {
-    const [completedTasks, setCompletedTasks] = useState([]);
+    const [completedPercent, setCompletedPercent] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchTasks = async () => {
+        async function fetchTasks() {
+            setLoading(true);
             const tasksData = await fetchMyTasks();
-            if (tasksData) {
-                setTasks(tasksData);
-                setCompletedTasks(tasksData.filter(task => task.completed).map(task => task.taskID));
-                setLoading(false);
-            } else {
-                // Handle error fetching tasks
-                setLoading(false);
-            }
-        };
+            setTasks(tasksData || []);
+            setLoading(false);
+        }
 
         fetchTasks();
     }, []);
 
+    useEffect(() => {
+        calculateCompletedPercentage();
+    }, [tasks]);
 
-    const handleTaskClick = async (taskId) => {
-        const isCompleted = completedTasks.includes(taskId);
-        const success = await setTaskCompletion(taskId, !isCompleted); // Toggle completion
-        if (success) {
-            if (isCompleted) {
-                setCompletedTasks(completedTasks.filter(id => id !== taskId));
-            } else {
-                setCompletedTasks([...completedTasks, taskId]);
-            }
-        } else {
-            console.error("Failed to update task completion status");
-        }
+    async function handleTaskClick(taskId, state) {
+        console.log("handleTaskClick called with taskId:", taskId, "and state:", state);
+        await setTaskCompletion(taskId, state);
+        console.log("Task completion updated. Refreshing tasks...");
+        const updatedTasksData = await fetchMyTasks();
+        setTasks(updatedTasksData || []);
+    }
+
+    async function handleDeleteTask(event, taskId){
+        await deleteTask(taskId);
+        console.log(taskId);
+    }
+
+    const calculateCompletedPercentage = () => {
+        const totalTasks = tasks.length;
+        const completedTasks = tasks.filter(task => task.taskFinished !== 0).length;
+        setCompletedPercent(totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100);
     };
-
-
-    const handleDeleteTask = async (taskId) => {
-        const success = await deleteTask(taskId);
-        if (success === true) {
-            setTasks(tasks.filter(task => task.taskID !== taskId));
-        } else {
-            // Handle error deleting task
-            console.error("Error deleting task");
-        }
-    };
-
-
-
-    const completedPercentage = tasks.length === 0 ? 0 : Math.round((completedTasks.length / tasks.length) * 100);
 
     return (
         <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
-            <SlidingSettings />
             <CssBaseline />
+            <MenuBar />
+            <SlidingSettings />
             <Box sx={{ my: 3, mx: 'auto', textAlign: 'center', color: 'gray' }}>
-                <Typography variant="h4" component="h1">
-                    My Tasks
-                </Typography>
+                <Typography variant="h4" component="h1">My Tasks</Typography>
                 {loading ? (
                     <CircularProgress />
                 ) : (
@@ -83,45 +70,43 @@ function HomePage() {
                         <Typography variant="h6" gutterBottom>
                             You have {tasks.length} tasks!
                         </Typography>
-
                         <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-                            <CircularProgress variant="determinate" value={completedPercentage} size={150} thickness={4} sx={{ color: '#67C6E3' }} />
+                            <CircularProgress variant="determinate" value={completedPercent} size={150} thickness={4} sx={{ color: '#81C4F8' }} />
                             <Typography
                                 variant="caption"
                                 component="div"
                                 color="text.secondary"
                                 sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
                             >
-                                {`${completedPercentage}%`}
+                                {`${completedPercent}%`}
                             </Typography>
                         </Box>
-
                         <List>
-                            {tasks.map((task) => (
+                            {tasks.map(task => (
                                 <React.Fragment key={task.taskID}>
                                     <ListItem
                                         button
-                                        onClick={() => handleTaskClick(task.taskID)}
                                         sx={{ backgroundColor: '#67C6E3', borderRadius: '10px', mb: 1 }}
                                     >
                                         <Checkbox
                                             edge="start"
-                                            checked={completedTasks.includes(task.taskID)}
+                                            checked={task.taskFinished !== 0}
                                             disableRipple
-                                            sx={{
-                                                color: 'white',
-                                                '&.Mui-checked': {
-                                                    color: 'gray',
-                                                },
-                                                '&.Mui-checked:hover': {
-                                                    backgroundColor: 'gray',
-                                                },
-                                            }}
+                                            onChange={() => handleTaskClick(task.taskID, task.taskFinished === 0)}
+                                            inputProps={{ 'aria-labelledby': String(task.taskID) }}
                                         />
-                                        <ListItemText primary={task.taskName} secondary={task.deadline} sx={{ color: 'white' }} />
+                                        <ListItemText
+                                            id={task.taskID}
+                                            primary={task.taskName}
+                                            secondary={task.deadline}
+                                        />
                                         <ListItemSecondaryAction>
-                                            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task.taskID)}>
-                                                <DeleteIcon sx={{ color: 'red' }} /> {/* Setting the color of DeleteIcon to red */}
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                                onClick={(event) => handleDeleteTask(event, task.taskID)}
+                                            >
+                                                <DeleteIcon sx={{ color: 'red' }} />
                                             </IconButton>
                                         </ListItemSecondaryAction>
                                     </ListItem>
@@ -132,7 +117,6 @@ function HomePage() {
                     </>
                 )}
             </Box>
-            <MenuBar />
         </Box>
     );
 }
