@@ -3,18 +3,14 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 import {initializeDataBaseWithRetry} from "./initializeDataBase.js";
+import {authenticateToken, login, signUp} from "./auth.js";
+import {createTask, fetchTasks} from "./taskManagement.js";
+import {fetchUserStat} from "./userStats.js";
 
 // Express config
 const app = express();
 app.use(cors()); //Work with any origin for now
 app.use(express.json());
-
-// Initialize authentication
-const { AuthProvider } = require("@propelauth/node");
-const authProvider = new AuthProvider({
-    apiKey: process.env.PROPEL_AUTH_API,
-    authDomain: process.env.PROPEL_URL
-});
 
 // Initialize database, exit if failed
 let dbConnector;
@@ -27,12 +23,16 @@ initializeDataBaseWithRetry(5).then(conn => {
 
 // Post Requests
 // app.post("/create-task", async (req, res) => createTask(req, res, dbConnector));
+app.post("/signup", async (req, res) => signUp(req, res, dbConnector));
+app.post("/login", async (req, res) => login(req, res, dbConnector));
+app.post("/authenticate", async (req, res) => authenticateToken(req, res, dbConnector));
+app.post("/create-task", async(req, res) => createTask(req, res, dbConnector));
 
-// Is authentication valid?
-// app.get("/auth", async(req,res)=> authenticateRequest(req,res,authProvider));
 
 
 // Get Requests
+app.get("/my-tasks/:token", async(req,res)=> fetchTasks(req,res,dbConnector));
+app.get("/user-stats/:username", async(req,res)=> fetchUserStat(req,res,dbConnector));
 
 
 // Listen for requests

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Button,
     TextField,
@@ -11,12 +11,40 @@ import {
     Typography, ListItemSecondaryAction, Container, CssBaseline,
 } from "@mui/material";
 import MenuBar from "../components/MenuBar";
+import {authenticateToken} from "../api/auth";
+import {createTask} from "../api/taskManagement";
+import ErrorMessage from "../components/ErrorMessage";
 
 function TaskPagePopUp() {
+    const [error, setErr] = useState(null);
+    const [errID, setErrID] = useState(0); //Error Message component won't re-render if same error occurs, but if new error ID is sent, it knows it's a new error
     const [taskData, setTaskData] = useState(null);
+
+    async function checkLoginStatus() {
+        let status = await authenticateToken();
+        if(status === false){
+            window.location.href = '/';
+        }
+    }
+
+    useEffect(() => {
+        checkLoginStatus();
+    }, []);
 
     function setData(dataType, data) {
         setTaskData({...taskData, [dataType]: data});
+    }
+
+    async function addTaskButton() {
+        let success = await createTask(taskData);
+        if (success !== true) {
+            setErr(success);
+            setErrID(prevId => prevId + 1); // Increment errorId to ensure a new key for each error
+            return;
+        }
+        if(success === true){
+            window.location.href = '/'; //TODO: fix this lol
+        }
     }
 
     return (
@@ -82,11 +110,12 @@ function TaskPagePopUp() {
                         fullWidth
                         variant="contained"
                         color="one"
-                        // onClick={handleSubmit}
+                        onClick={addTaskButton}
                     >
                         Submit
                     </Button>
                 </Box>
+                {error && <ErrorMessage message={error} errID={errID}/>}
             </Container>
             <MenuBar/>
         </CssBaseline>

@@ -5,7 +5,9 @@ import TaskPagePopUp from "./pages/TaskPagePopUp";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Leaderboard from "./pages/Leaderboard";
 import TestData from "./pages/TestData";
-import HomePage from "./pages/HomePage"; // Import HomePage
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage"; // Import HomePage
 
 function App() {
     const { palette } = createTheme();
@@ -42,6 +44,8 @@ function App() {
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="create-task" element={<TaskPagePopUp />} /> {/* Add route for TaskPagePopUp */}
                         <Route path="home" element={<HomePage />} /> {/* Add route for HomePage */}
+                        <Route path="login" element={<LoginPage />} />
+                        <Route path="signup" element={<SignUpPage />} />
                         <Route path="*" element={<NoPage />} />
                     </Route>
                 </Routes>

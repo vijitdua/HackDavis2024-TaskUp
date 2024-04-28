@@ -1,42 +1,41 @@
 import {useState} from "react";
-import {login} from "../api/auth";
-import ErrorMessage from "./ErrorMessage.jsx";
+import {signUp, login} from "../api/auth";
+import ErrorMessage from "./ErrorMessage";
 import {
     Avatar,
     Box,
     Button,
     Checkbox,
     Container,
-    FormControlLabel,
-    Grid,
-    Link,
+    FormControlLabel, Grid, Link,
     TextField,
     Typography
 } from "@mui/material";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 
-function Login() {
+function SignUp() {
     const [user, setUser] = useState(null);
     const [error, setErr] = useState(null);
-    const [errID, setErrID] = useState(0); //Error Message component won't re-render if same error occurs, but if new error ID is sent, it knows it's a new error
+    const [errID, setErrID] = useState(0); //Error Message component won't re-render if same error occurs, but if new error ID is sent, it knows its a new error
 
     function setUserData(dataType, data) {
         setUser({...user, [dataType]: data});
     }
 
-    async function loginButton() {
-        let success = await login(user);
-
-        if (success === true) {
+    async function signUpButton() {
+        const signUpSuccess = await signUp(user);
+        if (signUpSuccess === true) {
+            setUserData("remember", true);
+            await login(user);
             window.location.href = '/';
             return;
         }
-        setErr(success);
+        setErr(signUpSuccess);
         setErrID(prevId => prevId + 1); // Increment errorId to ensure a new key for each error
     }
 
-
     return (
+
         <Container maxWidth='xs'>
             <Box
                 sx={{
@@ -60,11 +59,44 @@ function Login() {
                 }}>
                     <Avatar
                         size='large'
-                        sx={{bgcolor: '#53b0c9'}}
+                        sx={{bgcolor: '#343536'}}
                     >
                         <LockIcon/>
                     </Avatar>
-                    <Typography variant="h4" component="h1">Log In</Typography>
+                    <Typography variant="h4" component="h1">Sign Up</Typography>
+                </Box>
+
+                {/*<Grid sx={{ margin: '0 !important' }}>*/}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        margin: '0 !important',
+                    }}
+                >
+                    <TextField
+                        autoComplete="given-name"
+                        name="firstName"
+                        required
+                        fullWidth
+                        id="firstName"
+                        label="First Name"
+                        autoFocus
+                        onChange={(event) => setUserData("firstName", event.target.value)}
+                        sx={{marginRight: '5px'}}
+                    />
+
+                    <TextField
+                        required
+                        fullWidth
+                        id="lastName"
+                        label="Last Name"
+                        name="lastName"
+                        autoComplete="family-name"
+                        onChange={(event) => setUserData("lastName", event.target.value)}
+                        sx={{marginLeft: '5px'}}
+                    />
+
                 </Box>
 
                 <TextField
@@ -104,9 +136,9 @@ function Login() {
                     fullWidth
                     variant="contained"
                     sx={{mt: 3, mb: 2}}
-                    onClick={loginButton}
+                    onClick={signUpButton}
                 >
-                    Log In
+                    Sign Up
                 </Button>
                 <Grid container spacing={2} justifyContent='space-between'>
                     <Grid item>
@@ -115,8 +147,8 @@ function Login() {
                         </Link>
                     </Grid>
                     <Grid item>
-                        <Link href="/signup" variant="body2">
-                            Don't have an account? Sign Up
+                        <Link href="/login" variant="body2">
+                            Already have an account? Login
                         </Link>
                     </Grid>
                 </Grid>
@@ -126,4 +158,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default SignUp;

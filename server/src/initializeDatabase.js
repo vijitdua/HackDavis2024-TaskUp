@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import mysql from "mysql2/promise";
+import {authenticateToken} from "./auth.js";
 dotenv.config();
 
 /**
@@ -61,52 +62,41 @@ function delay(ms) {
  */
 async function createUserDataTableIfNotExists(dbConnector){
     await dbConnector.query(`CREATE TABLE IF NOT EXISTS ${process.env.MYSQL_USER_TABLE}(
-//                     userID varchar(255) NOT NULL, 
-//                     username varchar(255) NOT NULL,
-//                     firstName varchar(255) NOT NULL,
-//                     lastName varchar(255) NOT NULL,
-//                     hashedPassword varchar(255) NOT NULL,
-//                     token varchar(255) NOT NULL,
-//                     totalWins int,
-//                     totalLosses int,
-//                     totalTies int,
-//                     UNIQUE(username),
-//                     UNIQUE(userID),
-//                     UNIQUE(token),
+                    userID varchar(255) NOT NULL, 
+                    username varchar(255) NOT NULL,
+                    firstName varchar(255) NOT NULL,
+                    lastName varchar(255) NOT NULL,
+                    hashedPassword varchar(255) NOT NULL,
+                    token varchar(255) NOT NULL,
+                    UNIQUE(username),
+                    UNIQUE(userID),
+                    UNIQUE(token),
                     PRIMARY KEY (username)
                     );`);
 }
 
-// userData is a json file where we have the username, userID. The check for the user being authenticated should happen elsewhere in auth.js
-async function createTaskDataBaseForUser(dbConnector, userData){
-    //TODO: Add a check for wether authenticated
-    await dbConnector.query(`CREATE TABLE IF NOT EXISTS ${process.env.MYSQL_TASK_TABLE}${userData.username}(
-                            taskID varchar(255) NOT NULL,
+// userData is a json file where we have the token. The check for the user being authenticated should happen elsewhere in auth.js
+export async function createTaskDataBaseForUser(dbConnector, token) {
+    if (!token) {
+        throw new Error("token not received");
+    }
+
+    // Check if host token is correct and get host username
+    let username = await dbConnector.execute(`SELECT username FROM ${process.env.MYSQL_USER_TABLE} WHERE token = ?;`, [token]);
+    if (!(username[0].length > 0)) {
+        throw new Error("invalid token"); // User tried to sign in with invalid / fake token.
+    }
+    username = username[0][0].username;
+
+    await dbConnector.query(`CREATE TABLE IF NOT EXISTS ${process.env.MYSQL_TASK_TABLE}${username}(
+                            taskID int NOT NULL AUTO_INCREMENT,
                             taskName varchar(255) NOT NULL,
                             priority int NOT NULL,
                             description varchar(255),
                             deadline DATETIME,
                             completedDate DATETIME,
-                            taskFinished bool
+                            taskFinished bool,
+                            PRIMARY KEY (taskID)
                             );`);
 }
 
-// /**
-//  * Creates a game room data table if it doesn't exist already
-//  * @param dbConnector DataBase connector variable
-//  * @returns void
-//  */
-// async function createGameDataTableIfNotExists(dbConnector){
-//     await dbConnector.query(`CREATE TABLE IF NOT EXISTS ${process.env.MYSQL_GAME_TABLE}(
-//                     roomID varchar(255) NOT NULL,
-//                     hostUserName varchar(255) NOT NULL,
-//                     player2UserName varchar(255),
-//                     state varchar(255),
-//                     hostPlaysFirst bool,
-//                     p1Char char(1),
-//                     p2Char char(2),
-//                     game varchar(255),
-//                     UNIQUE(roomID),
-//                     PRIMARY KEY (roomID)
-//                     );`);
-// }
