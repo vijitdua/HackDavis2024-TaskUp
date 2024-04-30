@@ -13,3 +13,5 @@ COPY . ./
 EXPOSE 3000
 
 CMD ["npm", "start"]
+
+#TODO: If time left, figure out why is run npm run BUILD, and serving build isn't working. Leave to dev mode otherwise

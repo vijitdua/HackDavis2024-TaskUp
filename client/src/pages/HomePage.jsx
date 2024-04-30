@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Box,
     Typography,
@@ -10,10 +10,10 @@ import {
     Divider,
     Checkbox,
     IconButton,
-    CssBaseline,
+    CssBaseline, Container,
 } from '@mui/material';
 import MenuBar from "../components/MenuBar";
-import { fetchMyTasks, deleteTask, setTaskCompletion } from "../api/taskManagement";
+import {fetchMyTasks, deleteTask, setTaskCompletion} from "../api/taskManagement";
 import SlidingSettings from "../components/SlidingSettings";
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -47,7 +47,7 @@ function HomePage() {
         setTasks(updatedTasksData || []);
     }
 
-    async function handleDeleteTask(event, taskId){
+    async function handleDeleteTask(event, taskId) {
         await deleteTask(taskId);
         console.log(taskId);
         window.location.href = '/';
@@ -61,76 +61,85 @@ function HomePage() {
     };
 
     return (
-        <Box sx={{ backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7 }}>
-            <CssBaseline />
-            <MenuBar />
-            <Box sx={{mx: 'auto', textAlign: 'center', color: 'gray' }}>
-                <br/>
-                <Typography variant="h2" component="h1" style={{ fontFamily: 'Trebuchet MS', color: '#2E5077',fontWeight: 'bold' }}>
-                    My Tasks
-                </Typography>
-                {loading ? (
-                    <CircularProgress />
-                ) : (
-                    <>
-                        <Typography variant="h6" gutterBottom style={{ fontFamily: 'Trebuchet MS'}}>
-                            {numTasksLeft === 0 ? "Good work, you finished all your tasks!" : `You have ${numTasksLeft} tasks!`}
-                        </Typography>
-                        <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', padding: 3 }}>
-                            <CircularProgress variant="determinate" value={completedPercent} size={250} thickness={6} sx={{ color: '#FFA69E' }} />
-                            <Typography
-                                variant="caption"
-                                component="div"
-                                color="text.secondary"
-                                sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
-                            >
-                                {`${completedPercent}%`}
+        <Box sx={{backgroundColor: '#D8F0FF', minHeight: '100vh', pb: 7}}>
+            <MenuBar/>
+            <Container maxWidth='lg'>
+                <Box sx={{mx: 'auto', textAlign: 'center', color: 'gray'}}>
+                    <br/>
+                    <Typography variant="h2" component="h1"
+                                style={{fontFamily: 'Trebuchet MS', color: '#2E5077', fontWeight: 'bold'}}>
+                        My Tasks
+                    </Typography>
+                    {loading ? (
+                        <CircularProgress/>
+                    ) : (
+                        <>
+                            <Typography variant="h6" gutterBottom style={{fontFamily: 'Trebuchet MS'}}>
+                                {numTasksLeft === 0 ? "Good work, you finished all your tasks!" : `You have ${numTasksLeft} tasks!`}
                             </Typography>
-                        </Box>
-                        <List>
-                            {tasks.map(task => (
-                                <React.Fragment key={task.taskID}>
-                                    <ListItem
-                                        button
-                                        sx={{ backgroundColor: '#81C4F8', borderRadius: '10px', mb: 1 }}
-                                        onClick={() => handleTaskClick(task.taskID, task.taskFinished === 0)}
-                                    >
-                                        <Checkbox
-                                            edge="start"
-                                            checked={task.taskFinished !== 0}
-                                            disableRipple
-                                            onChange={() => handleTaskClick(task.taskID, task.taskFinished === 0)}
-                                            inputProps={{ 'aria-labelledby': String(task.taskID) }}
-                                        />
-                                        <ListItemText
-                                            id={task.taskID}
-                                            primary={<Typography style={{ color: '#2E5077' }}>{task.taskName}</Typography>}
-                                            secondary={new Date(task.deadline).toLocaleString('en-US', {
-                                                month: 'numeric',
-                                                day: 'numeric',
-                                                year: 'numeric',
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                hour12: true
-                                            })}
-                                        />
-                                        <ListItemSecondaryAction>
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="delete"
-                                                onClick={(event) => handleDeleteTask(event, task.taskID)}
-                                            >
-                                                <DeleteIcon sx={{ color: 'grey' }} />
-                                            </IconButton>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                    <Divider />
-                                </React.Fragment>
-                            ))}
-                        </List>
-                    </>
-                )}
-            </Box>
+                            <Box sx={{position: 'relative', display: 'flex', justifyContent: 'center', padding: 3}}>
+                                <CircularProgress variant="determinate" value={completedPercent} size={250}
+                                                  thickness={6} sx={{color: '#FFA69E'}}/>
+                                <Typography
+                                    variant="caption"
+                                    component="div"
+                                    color="text.secondary"
+                                    sx={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)'
+                                    }}
+                                >
+                                    {`${completedPercent}%`}
+                                </Typography>
+                            </Box>
+                            <List>
+                                {tasks.map(task => (
+                                    <React.Fragment key={task.taskID}>
+                                        <ListItem
+                                            button
+                                            sx={{backgroundColor: '#81C4F8', borderRadius: '10px', mb: 1}}
+                                            onClick={() => handleTaskClick(task.taskID, task.taskFinished === 0)}
+                                        >
+                                            <Checkbox
+                                                edge="start"
+                                                checked={task.taskFinished !== 0}
+                                                disableRipple
+                                                onChange={() => handleTaskClick(task.taskID, task.taskFinished === 0)}
+                                                inputProps={{'aria-labelledby': String(task.taskID)}}
+                                            />
+                                            <ListItemText
+                                                id={task.taskID}
+                                                primary={<Typography
+                                                    style={{color: '#2E5077'}}>{task.taskName}</Typography>}
+                                                secondary={new Date(task.deadline).toLocaleString('en-US', {
+                                                    month: 'numeric',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                    hour: 'numeric',
+                                                    minute: 'numeric',
+                                                    hour12: true
+                                                })}
+                                            />
+                                            <ListItemSecondaryAction>
+                                                <IconButton
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                    onClick={(event) => handleDeleteTask(event, task.taskID)}
+                                                >
+                                                    <DeleteIcon sx={{color: 'grey'}}/>
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                        <Divider/>
+                                    </React.Fragment>
+                                ))}
+                            </List>
+                        </>
+                    )}
+                </Box>
+            </Container>
         </Box>
     );
 }
