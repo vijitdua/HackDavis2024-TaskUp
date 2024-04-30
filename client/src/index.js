@@ -2,15 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {AuthProvider} from "@propelauth/react";
 import {CssBaseline} from "@mui/material";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        {/*<AuthProvider authUrl={process.env.REACT_APP_PROPEL}>*/}
                 <App/>
-        {/*</AuthProvider>*/}
     </React.StrictMode>
 );
 
