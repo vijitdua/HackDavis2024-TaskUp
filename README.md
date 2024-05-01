@@ -79,7 +79,7 @@ This can also be run through both docker or npm.
 - [Vijit Dua](https://github.com/vijitdua) 
     - Backend: Everything
     - Frontend: API to communicate with backend and some (login, signup, bottom bar, and error message) UI components
-- [Tonya Patil](https://github.com/tbpatil)
+- [Toniya Patil](https://github.com/tbpatil)
   - Frontend: Building main front-end components
 - [Nandhana Selvam](https://github.com/nandhanaselvam) 
     - Frontend: Handling API returns and parsing them into built components.
