@@ -12,7 +12,7 @@
 while providing an engaging and interactive experience. The application seamlessly integrates task management with 
 gamification techniques and collaboration tools, catering to both individual users and teams.
 
-[Check out the demo video](./demo/demo-video.mp4)
+[Check out the demo video](https://youtu.be/s_a5ya_JwBQ)
 
 ---
 
