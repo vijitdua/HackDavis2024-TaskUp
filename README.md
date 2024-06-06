@@ -16,6 +16,17 @@ gamification techniques and collaboration tools, catering to both individual use
 
 ---
 
+## Preview
+
+- <img width="250" alt="image" src="https://github.com/vijitdua/HackDavis2024-TaskUp/assets/82555472/9878409f-5d3c-4749-b178-88c14e60da28">
+
+- <img width="250" alt="image" src="https://github.com/vijitdua/HackDavis2024-TaskUp/assets/82555472/b477d7c2-c290-46d9-9141-650079813d30">
+- <img width="250" alt="image" src="https://github.com/vijitdua/HackDavis2024-TaskUp/assets/82555472/1a6fde03-1b1e-4f7c-ba9b-10b619e65cc0">
+- <img width="250" alt="image" src="https://github.com/vijitdua/HackDavis2024-TaskUp/assets/82555472/3ad2e15b-7757-400c-9818-f08e3be92747">
+- <img width="250" alt="image" src="https://github.com/vijitdua/HackDavis2024-TaskUp/assets/82555472/785c4441-98c4-49ea-a5a6-c51443b7583e">
+
+---
+
 ## Tech Stack
 
 ### Frontend
