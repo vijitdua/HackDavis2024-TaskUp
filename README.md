@@ -12,6 +12,8 @@
 while providing an engaging and interactive experience. The application seamlessly integrates task management with 
 gamification techniques and collaboration tools, catering to both individual users and teams.
 
+> This was my second-ever project, following my [Multiplayer TicTacToe](https://github.com/vijitdua/multiplayer-tic-tac-toe) app. It was also my first experience <ins>working in a team</ins> on a full-stack application, focusing on both the frontend and backend. Pardon the poor file structure and code style, newer projects have better code :).
+
 [Check out the demo video](https://youtu.be/s_a5ya_JwBQ)
 
 ---
